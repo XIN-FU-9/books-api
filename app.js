@@ -8,6 +8,7 @@ let books = [
 
 let nextId = 6; // use this for any new book you create
 
+//Part 1: Start the Server
 const express = require("express");
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 //   res.send("THIS IS BOOKS API 123456");
 // });
 
+//Part 2: Your First Route
 //Write the smallest possible route first, before touching your book data.
 app.get("/", (req, res) => res.send("Books API is running"));
 
@@ -28,7 +30,7 @@ app.get("/", (req, res) => res.send("Books API is running"));
 app.get("/api/books", (req, res) => res.json(books));
 
 //Part 4: GET One Book by Id
-//first try:
+//-----first try: 
 // app.get("/api/books/:id", (req, res) => {
 //   Number(req.params.id ){
 //     newArry = books.map((book)=>{
@@ -36,7 +38,10 @@ app.get("/api/books", (req, res) => res.json(books));
 //     })
 //   }
 //  })
+// we don't need .map for it, cz it allows us to modify, we don't need it. we just need to 
+// look for it, so we use different method.
 
+ //revised:
  app.get("/api/books/:id", (req, res) => {
   const id = Number(req.params.id)  //this value is always a string, 
                                     // this is wrap it in the Number()
@@ -49,13 +54,47 @@ app.get("/api/books", (req, res) => res.json(books));
   if (!book){
     return res.status(404).json(// json accepted a string
       'There is no book matches.'
-    ) // return is not a function, it doesn't need a(), {}.
+    ) // return is not a function, it doesn't need a(), {}. Here need a () after .json
   }else{
     return res.json(book)
   }
 
  });
 
+//Part 5: POST a New Book
+// -----first try:  
+// app.post("/api/books", (req, res) => {
+//   const {title , author , genre} = req.body // split the properties as a single items.
+//                                             // put values into separate variables. 
+//   // This created an arry, but instruction saying this should be an object.                                     
+//   // newBook = [ 
+//   //   {id : nextId} 
+//   //   newBook.nextId = nextId + 1
+//   // ]
+
+//   // books.push(newBook)
+//   // res.newBook.json
+//   // res.status(201).json
+
+//  })
+
+//revised---second try:
+ app.post("/api/books", (req, res) => { // if i have two post,then it won't work.
+  const {title , author , genre} = req.body
+
+  const newBook = {
+    id: nextId,
+             // these are the same, could use both way.
+    title,  // title:title
+    author, // author:author
+    genre, // genre:genre
+  }
+
+  nextId++;
+  books.push(newBook)
+  res.status(201).json(newBook)
+ })
+ 
 
 app.listen(8080, () => console.log("Server running on port 8080"));
 
