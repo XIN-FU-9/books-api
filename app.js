@@ -15,9 +15,11 @@ const app = express();
 // Without it, req.body will always be empty.
 app.use(express.json()); 
 
+app.get("/", (req, res) => {
+  res.send("THIS IS BOOKS API 123456");
+});
 
-
-
+app.listen(8080, () => console.log("Server running on port 8080"));
 
 
 
