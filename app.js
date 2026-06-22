@@ -15,9 +15,47 @@ const app = express();
 // Without it, req.body will always be empty.
 app.use(express.json()); 
 
-app.get("/", (req, res) => {
-  res.send("THIS IS BOOKS API 123456");
-});
+//test if the server working:
+// app.get("/", (req, res) => {
+//   res.send("THIS IS BOOKS API 123456");
+// });
+
+//Write the smallest possible route first, before touching your book data.
+app.get("/", (req, res) => res.send("Books API is running"));
+
+//Part 3:GET All Books
+//Why: This is the simplest way to read data — send back the whole list.
+app.get("/api/books", (req, res) => res.json(books));
+
+//Part 4: GET One Book by Id
+//first try:
+// app.get("/api/books/:id", (req, res) => {
+//   Number(req.params.id ){
+//     newArry = books.map((book)=>{
+//       if book.id === GET/api/books/id ? ture : false
+//     })
+//   }
+//  })
+
+ app.get("/api/books/:id", (req, res) => {
+  const id = Number(req.params.id)  //this value is always a string, 
+                                    // this is wrap it in the Number()
+  const book = books.find((book) =>{ // anytime use {} we need a return otherwides, if it one line, we don't need it.
+    return book.id === id
+  })
+  //console.log(book) -- check out if the objects that exist.
+
+  // This is the step which if no book matches, send back(res) 404, and stop return.
+  if (!book){
+    return res.status(404).json(// json accepted a string
+      'There is no book matches.'
+    ) // return is not a function, it doesn't need a(), {}.
+  }else{
+    return res.json(book)
+  }
+
+ });
+
 
 app.listen(8080, () => console.log("Server running on port 8080"));
 
