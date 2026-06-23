@@ -113,15 +113,19 @@ app.get("/api/books", (req, res) => res.json(books));
 //revised---second try:
 app.patch("/api/books/:id", (req, res) => { 
   const id = Number(req.params.id)
-  const book = books.find(book => book.id ===id) // cz there is only one return
+  const book = books.find((book) => book.id ===id) // cz there is only one return
 
   if(!book){
     return res.sendStatus(404)
   }else{
     Object.assign(book, req.body)
-    return res.Status(200).json(book)  // in the instruction,we don't need to stop instead of update.
-    // return res.sendStatus(400) this will stop.
-    // this the wrong way:res.send(...)
+    res.status(200).send(recipe)
+    //return res.Status(200).json(book)
+
+    // in the instruction,we don't need to stop, instead of update.
+    // return res.sendStatus(200) this will stop.
+    // this the wrong way since it means 
+                        //res.send(...)
                        // res.json(...)
     // we need add book in the json(), cz we need to upadate the book.
                                    //  this one doesn't need a return
