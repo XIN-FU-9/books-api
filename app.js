@@ -133,6 +133,19 @@ app.patch("/api/books/:id", (req, res) => {
 
 })
 
+//Part 7:DELETE a Book
+app.delete("/api/books/:id", (req, res) => {
+    const bookId = Number(req.params.id);
+    const bookPosition = books.findIndex((book) => book.id === bookId);
+
+    if (!bookPosition) {
+        return res.status(404).send("Book not found!");
+    }
+
+    books.splice(bookPosition, 1);
+    res.sendStatus(204);
+});
+
 app.listen(8080, () => console.log("Server running on port 8080"));
 
 
