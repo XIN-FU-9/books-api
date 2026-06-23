@@ -87,14 +87,47 @@ app.get("/api/books", (req, res) => res.json(books));
              // these are the same, could use both way.
     title,  // title:title
     author, // author:author
-    genre, // genre:genre
+    genre, // genre:genre\
+    available: available // available:available
   }
 
   nextId++;
   books.push(newBook)
-  res.status(201).json(newBook)
+  return res.status(201)
+  //return res.status(201).json(newBook)
  })
  
+
+ 
+ //Part 6: PATCH an Existing Book
+ //first try:
+//  app.patch("/api/books/:id", (req, res) => { 
+//    const id = Number(req.params.id) // params is the object. the number is a function conver a string to a interger.
+//    books.find((book)=>(
+//     if (!id){
+//     book.id===id // define this line at the begainning.
+//     res.sendStatus(404) // we need a return here
+   
+//   })
+
+//revised---second try:
+app.patch("/api/books/:id", (req, res) => { 
+  const id = Number(req.params.id)
+  const book = books.find(book => book.id ===id) // cz there is only one return
+
+  if(!book){
+    return res.sendStatus(404)
+  }else{
+    Object.assign(book, req.body)
+    return res.Status(200).json(book)  // in the instruction,we don't need to stop instead of update.
+    // return res.sendStatus(400) this will stop.
+    // this the wrong way:res.send(...)
+                       // res.json(...)
+    // we need add book in the json(), cz we need to upadate the book.
+                                   //  this one doesn't need a return
+  }
+
+})
 
 app.listen(8080, () => console.log("Server running on port 8080"));
 
